@@ -10,8 +10,15 @@ contamination, takt, route yield and shipment commitments.
 The cross-domain workflow layer composes these services for material
 readiness, dispatch-after-hold, qualified reservations and assignments,
 metrology/SPC gates, containment, powered scheduling, rework release,
-merge-to-commit and performance reporting.  It preserves domain rejection
-reasons instead of replacing them with a generic success or failure.
+merge-to-commit, performance reporting and yield-anomaly containment.  It
+preserves domain rejection reasons instead of replacing them with a generic
+success or failure.
+
+Yield-anomaly containment starts at the last confirmed-good checkpoint,
+combines the route window with bidirectional genealogy to freeze an active-WIP
+scope, and keeps every scoped lot held until all dispositions finish and
+retests recover.  Duplicate and late events are idempotent and can never grow,
+shrink or roll back the frozen scope or recorded state.
 
 Shared infrastructure supplies half-open time intervals, versioned policy
 history, immutable decisions, quantity conservation and an append-only event
